@@ -15,13 +15,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  host: postgres
+  username: <%= ENV.fetch("POSTGRES_USER") { "hello" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "password" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: mast2_development
+  database: <%= ENV.fetch("POSTGRES_DB") { "hello_development" } %>
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -55,7 +56,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: mast2_test
+  database: hello_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -79,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: mast2_production
-  username: mast2
-  password: <%= ENV["MAST2_DATABASE_PASSWORD"] %>
+  database: hello_production
+  #username: mast2
+  #password: <%= ENV["MAST2_DATABASE_PASSWORD"] %>
