@@ -5,6 +5,7 @@
 
 
 <div data-controller="hello">
-  <input type="text">
-  <button>Greet</button>
+  <input data-hello-target="name" type="text">
+  <button data-action="click->hello#greet">greet</button>
+  <div data-hello-target="result"></div>
 </div>

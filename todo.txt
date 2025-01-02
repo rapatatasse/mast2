@@ -49,7 +49,9 @@ d/ chercher une faille qui permettrai d'afficher d'un produit non créer par l"u
 
 e/ ajouter un champ "admin" dans le model
 
-d/ créer une focntion général isadmin? sur la class user qui renvoie true si admin false sinon afin que l'on puisse l'utiliser n'importe ou.
+f/ créer une fonction général isadmin? sur la class user dans le model user qui renvoie true si admin false sinon afin que l'on puisse l'utiliser n'importe ou.
+
+g/ créer une focntion qui renvoir la date soru le bon format jj/mm/aaaa en créant un helper
 
 f/ dans home afficher un lien vers la page des users si l'utilisateur est admin sinon afficher un lien vers la page des produits de l'utilisateur connecté.
 
