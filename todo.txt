@@ -1,0 +1,72 @@
+Travail avec ses ficheirs : 
+db\schema.rb   -> ficheir pour voir la structure de votre db (ne pas modifier ce fichier) avvec au michier de migration et aux seeds
+app\views\pages -> vos view
+config\routes.rb -> les routes
+app\controllers -> les controlleurs
+app\models -> les models
+app\assets\stylesheets -> votre style
+
+
+bibli : https://sites.google.com/view/tpass-bibli/g%C3%A9n%C3%A9rateur-de-code-ruby-on-rails
+(aide pour les migrations)
+
+
+
+
+1/ Créer une table "Products" avec les champs suivants :
+
+name
+description
+price    
+quantity
+user_id
+
+réaliser un scaffold pour générer les fichiers correspondants.
+
+afficher la liste des produits avec le nom de l'utilisateur qui les a créer.
+Dans le formulaire de création de produit, afficher la liste des utilisateurs.
+
+3/ a la place d'avoir la vue show créer une modale pour afficher le produit (modal boostrap)
+
+2/ créer un seed avec faker pour créer 50 produits différents avec un random user
+
+3/ créer un champs pour filtrer les produits par nom ou produit puis par nom d'utilisateur. 
+aider vous avec la gem "pg_search" https://github.com/Casecommons/pg_search
+
+
+
+
+
+
+
+a / créer vue pour lister/editer/... les Users en copier collant les vues de products et les controlleurs
+
+b/ n'afficher que les produits de l'utilisateur connecté dans la vue des produits
+
+c/ sur le form injecter le user_id de l'utilisateur connecté
+
+d/ chercher une faille qui permettrai d'afficher d'un produit non créer par l"utilisateur connecté.
+
+e/ ajouter un champ "admin" dans le model
+
+d/ créer une focntion général isadmin? sur la class user qui renvoie true si admin false sinon afin que l'on puisse l'utiliser n'importe ou.
+
+f/ dans home afficher un lien vers la page des users si l'utilisateur est admin sinon afficher un lien vers la page des produits de l'utilisateur connecté.
+
+
+1/ créer une vue PDf pour avoir une vue pdf du show de produit.
+(installer gem):
+gem "wkhtmltopdf-binary-edge"  # gestion des pdf
+gem "wicked_pdf"          # gestion des pdf
+
+
+2/ créer une vue pdf pour avoir une vue pdf de la liste des produits avec numérotation des pages
+
+3/ créer un bouton et une action dans le controlleur pour augmenter tout les produits en fonction d'un input.
+
+4/ rajouter des cases à cocher sur la listes des produits et un autre bouton pour affecter le prix qu'au produit avec un input.
+
+
+
+
+

@@ -1,6 +1,19 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # Verbose logging for asset pipeline
+  config.assets.logger = Logger.new(STDOUT)
+  config.assets.raise_runtime_errors = true
+  config.assets.debug = true
+  config.assets.digest = true
+  config.assets.compile = true
+
+  # Log importmap configuration
+  config.after_initialize do
+    Rails.logger.debug "Importmap paths: #{Rails.application.config.importmap.paths}"
+    Rails.logger.debug "Importmap cache: #{Rails.application.config.importmap.cache_path}"
+  end
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -55,9 +68,6 @@ Rails.application.configure do
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
-
-  # Disable digesting assets with an md5 tag.
-  config.assets.digest = false
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true

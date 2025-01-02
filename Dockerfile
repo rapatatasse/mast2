@@ -31,7 +31,8 @@ WORKDIR /app
 # Set environment
 ENV RAILS_LOG_TO_STDOUT="1" \
     RAILS_SERVE_STATIC_FILES="true" \
-    BUNDLE_WITHOUT="test"
+    BUNDLE_WITHOUT="test" \
+    DEBUG_ASSETS="true"
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
@@ -41,11 +42,25 @@ RUN bundle install
 COPY package.json yarn.lock ./
 RUN yarn install
 
+# Debug JS dependencies and Stimulus
+RUN echo "Installed Node.js version:" && node --version \
+    && echo "Installed Yarn version:" && yarn --version \
+    && echo "Node modules:" && ls -la node_modules \
+    && echo "Stimulus modules:" && find node_modules/@hotwired -type f
+
 # Copy application code
 COPY . .
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile --gemfile app/ lib/
+
+# Precompile assets
+RUN bundle exec rails assets:precompile
+
+# Debug asset compilation
+RUN echo "Listing app/assets:" && ls -la app/assets \
+    && echo "Listing public/assets:" && ls -la public/assets || true \
+    && echo "Listing app/assets/builds:" && ls -la app/assets/builds || true
 
 # Stage: Assets
 FROM base as assets
