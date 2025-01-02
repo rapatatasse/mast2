@@ -1,14 +1,14 @@
 /* Base styles */
 
-body { 
-  min-height:100vh; 
-  margin:0; 
-  position:relative;
-  background-color: rgb(43, 43, 43);
+body {
+  min-height: 100vh;
+  margin: 0;
+  position: relative;
+  background-color: rgb(167, 140, 140);
 }
 
 .container {
-background-color: rgb(255, 255, 255);
-padding-bottom: 30px;
+  background-color: rgb(255, 255, 255);
+  padding-bottom: 30px;
 
 }

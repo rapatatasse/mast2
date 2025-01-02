@@ -1,5 +1,5 @@
 Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
-
+App qui marche a par boostrap
 
 en local:
 installer ruby "3.2.2"
@@ -26,6 +26,5 @@ docker compose --profile postgres --profile web up --build
 docker-compose down -v
 
 
-action pour rails (voir docker compose)
-:
+action pour rails (voir docker compose) :
 docker-compose exec web rails db:create
