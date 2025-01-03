@@ -20,14 +20,12 @@ docker run mast2
 
 
 
-docker-compose up --build
+docker-compose up 
+docker-compose -p mast2testapp up 
 
 
 ouvrire http://localhost:8000/
 app\assets\builds\application.css
-
-docker compose --profile postgres --profile web up --build
-docker-compose down -v
 
 
 action pour rails (voir docker compose) :
