@@ -23,8 +23,7 @@ module Mast2
       namespace: "cache"
     }
 
-    # Set Sidekiq as the back-end for Active Job.
-    config.active_job.queue_adapter = :sidekiq
+
 
     # Mount Action Cable outside the main process or domain.
     config.action_cable.mount_path = nil

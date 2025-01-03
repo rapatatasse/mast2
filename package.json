@@ -2,17 +2,16 @@
   "name": "mast2",
   "private": true,
   "dependencies": {
-    "@hotwired/stimulus": "3.2.1",
-    "@hotwired/stimulus-loading": "^1.2.0",
-    "@hotwired/turbo-rails": "7.2.5",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^7.3.0",
+    "@popperjs/core": "^2.11.8",
     "autoprefixer": "10.4.13",
-    "esbuild": "0.16.17",
+    "bootstrap": "^5.3.2",
     "postcss": "8.4.21",
-    "postcss-import": "15.1.0",
-    "bootstrap": "^5.2.3"
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "15.1.0"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets",
     "build:css": "postcss ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css"
   }
 }

@@ -15,13 +15,17 @@ rails s
 
 docker :
 
-docker build -t mast2 .
 
 docker run mast2
 
 
 
 docker-compose up --build
+
+
+ouvrire http://localhost:8000/
+app\assets\builds\application.css
+
 docker compose --profile postgres --profile web up --build
 docker-compose down -v
 

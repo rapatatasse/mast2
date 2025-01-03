@@ -40,7 +40,8 @@ RUN bundle install
 
 # Install JS dependencies
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --network-timeout 100000
+RUN yarn global add postcss postcss-cli
 
 # Debug JS dependencies and Stimulus
 RUN echo "Installed Node.js version:" && node --version \

@@ -48,7 +48,6 @@ gem "image_processing", "~> 1.2"
 gem "mini_racer"
 
 gem "bootstrap", "~> 5.2"
-gem "sidekiq", "~> 7.0"
 gem "devise"
 gem "autoprefixer-rails"
 gem "font-awesome-sass", "~> 6.1"

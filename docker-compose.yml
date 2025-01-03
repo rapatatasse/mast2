@@ -29,7 +29,7 @@ x-assets: &default-assets
       - "NODE_ENV=${NODE_ENV:-development}"
   env_file:
     - ".env"
-  profiles: ["assets"]
+  profiles: [ "assets" ]
   restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
   stop_grace_period: "3s"
   tty: true
@@ -50,7 +50,7 @@ services:
     image: "postgres:15.1-bullseye"
     ports:
       - "5432:5432"
-    profiles: ["postgres"]
+    profiles: [ "postgres" ]
     restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
     stop_grace_period: "3s"
     volumes:
@@ -63,7 +63,7 @@ services:
           cpus: "${DOCKER_REDIS_CPUS:-0}"
           memory: "${DOCKER_REDIS_MEMORY:-0}"
     image: "redis:7.0.8-bullseye"
-    profiles: ["redis"]
+    profiles: [ "redis" ]
     restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
     stop_grace_period: "3s"
     volumes:
@@ -84,19 +84,8 @@ services:
       retries: 3
     ports:
       - "${DOCKER_WEB_PORT_FORWARD:-127.0.0.1:8000}:${PORT:-8000}"
-    profiles: ["web"]
+    profiles: [ "web" ]
     command: "./bin/rails server -p 8000 -b '0.0.0.0'"
-
-  worker:
-    <<: *default-app
-    command: "bundle exec sidekiq -C config/sidekiq.yml"
-    entrypoint: []
-    deploy:
-      resources:
-        limits:
-          cpus: "${DOCKER_WORKER_CPUS:-0}"
-          memory: "${DOCKER_WORKER_MEMORY:-0}"
-    profiles: ["worker"]
 
   cable:
     <<: *default-app
@@ -109,7 +98,7 @@ services:
           memory: "${DOCKER_CABLE_MEMORY:-0}"
     ports:
       - "${DOCKER_CABLE_PORT_FORWARD:-127.0.0.1:28080}:28080"
-    profiles: ["cable"]
+    profiles: [ "cable" ]
 
   js:
     <<: *default-assets
