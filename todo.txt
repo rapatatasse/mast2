@@ -15,24 +15,29 @@ bibli : https://sites.google.com/view/tpass-bibli/g%C3%A9n%C3%A9rateur-de-code-r
 
 1/ Créer une table "Products" avec les champs suivants :
 
-name
-description
-price    
-quantity
-user_id
+
+name (string)
+description (text)
+price  (float)  
+quantity (integer)
+user (references)
 
 réaliser un scaffold pour générer les fichiers correspondants.
+-> docker-compose exec web rails generate scaffold Product ...
 
-afficher la liste des produits avec le nom de l'utilisateur qui les a créer.
-Dans le formulaire de création de produit, afficher la liste des utilisateurs.
+afficher la liste des produits avec l'email de l'utilisateur qui les a créer.
+Dans le formulaire de création de produit, afficher l'utilisateur'.
 
 3/ a la place d'avoir la vue show créer une modale pour afficher le produit (modal boostrap)
 
-2/ créer un seed avec faker pour créer 50 produits différents avec un random user
+4/ obliger la saisie du stock / prix et name pour le produit (info a mettre dans le modele)
 
-3/ créer un champs pour filtrer les produits par nom ou produit puis par nom d'utilisateur. 
+5/ créer un seed avec faker pour créer 50 produits différents avec un random user
+
+6/ créer un champs pour filtrer les produits par nom ou produit puis par nom d'utilisateur. 
 aider vous avec la gem "pg_search" https://github.com/Casecommons/pg_search
-
+pour faire un bundle avec docker utiliser :
+-> docker-compose up --build  
 
 
 
@@ -40,7 +45,7 @@ aider vous avec la gem "pg_search" https://github.com/Casecommons/pg_search
 
 
 a / créer vue pour lister/editer/... les Users en copier collant les vues de products et les controlleurs
-
+dans l'index afficher dans la card de l'utilisateur de le de tous ses produits
 b/ n'afficher que les produits de l'utilisateur connecté dans la vue des produits
 
 c/ sur le form injecter le user_id de l'utilisateur connecté
