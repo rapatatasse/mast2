@@ -1,19 +1,10 @@
 
-```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
-```
-
-
-
-Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/rails-templates), created by the [Le Wagon coding bootcamp](https://www.lewagon.com) team.
 
 #### Ruby et rails avec Docker: ####
 docker :
 1ere lancement et lorsque changement de gems :
+
+copier coller env.exemple -> .env
 
 ```bash
 docker-compose up --build 
@@ -36,7 +27,16 @@ action pour rails (voir docker compose) :
 ```bash
 docker-compose exec web rails db:create
 ```
-
+pour crer migration et autre action voir 
+https://sites.google.com/view/tpass-bibli/g%C3%A9n%C3%A9rateur-de-code-ruby-on-rails
+devant commet mettre :
+```bash
+docker-compose exec web ...
+```
+exemple :
+```bash
+docker-compose exec web rails generate model Clients Username:string Lastname:string phone:string mail:string comment:string actif:boolean user:references 
+```
 
 #### Ruby et rails en local: ####
 installer ruby "3.2.2"
