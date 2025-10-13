@@ -15,6 +15,6 @@ User.create!(nom: "Admin", prenom: "Admin", email: "admin@admin.com", password: 
 User.create!(nom: "User", prenom: "User", email: "user@user.com", password: "password")
 #creer seed pour clientsboucle pour 20 clients
 20.times do |i|
-  Client.create!(nom: "Client #{i+1}", prenom: "Client #{i+1}", description: "Client #{i+1}", date_debut: Date.today, date_fin: Date.today + 1.year)
+  Client.create!(nom: "Client #{i+1}", prenom: "Client #{i+1}", description: "Client #{i+1}", date_debut: Date.today, date_fin: Date.today + 1.year, user_id: User.first.id)
 end
 

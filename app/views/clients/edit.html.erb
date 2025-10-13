@@ -1,10 +1,24 @@
-<h1>Editing client</h1>
-  <%= link_to "Back to clients", clients_path, class: "btn btn-secondary" %>
+<div class="py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">
+        <i class="bi bi-pencil-square text-warning"></i> Modifier le Client
+      </h1>
+      <p class="text-muted mb-0">Modifier les informations du client #<%= @client.id %></p>
+    </div>
+    <div class="d-flex gap-2">
+      <%= link_to @client, class: "btn btn-outline-info" do %>
+        <i class="bi bi-eye me-1"></i> Voir
+      <% end %>
+      <%= link_to clients_path, class: "btn btn-outline-secondary" do %>
+        <i class="bi bi-arrow-left me-1"></i> Retour
+      <% end %>
+    </div>
+  </div>
 
-<%= render "form", client: @client %>
-
-<br>
-
-<div>
-  <%= link_to "Show this client", @client, class: "btn btn-secondary" %> |
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <%= render "form", client: @client %>
+    </div>
+  </div>
 </div>

@@ -1,66 +1,135 @@
-<p style="color: green"><%= notice %></p>
-
-<div class="container-fluid mt-4">
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <h1>Clients</h1>
+<div class="py-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">
+        <i class="bi bi-people text-primary"></i> Gestion des Clients
+      </h1>
+      <p class="text-muted mb-0">Liste complète de vos clients (<%= @clients.count %> clients)</p>
     </div>
-    <div class="col-md-6 text-end">
-      <%= link_to "Nouveau client", new_client_path, class: "btn btn-primary" %>
+    <%= link_to new_client_path, class: "btn btn-primary" do %>
+      <i class="bi bi-plus-circle me-2"></i>Nouveau client
+    <% end %>
+  </div>
+
+  <!-- Search and Export Bar -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white">
+              <i class="bi bi-search"></i>
+            </span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom, prénom, description...">
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <button id="exportCSV" class="btn btn-outline-success">
+            <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
+          </button>
+          <button id="exportJSON" class="btn btn-outline-info">
+            <i class="bi bi-filetype-json me-1"></i> JSON
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <input type="text" id="searchInput" class="form-control" placeholder="Rechercher...">
-    </div>
-    <div class="col-md-6 text-end">
-      <button id="exportCSV" class="btn btn-success">
-        <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV
-      </button>
-      <button id="exportJSON" class="btn btn-info">
-        <i class="bi bi-filetype-json"></i> Export JSON
-      </button>
-    </div>
-  </div>
-
-  <div class="table-responsive">
-    <table class="table table-striped table-hover" id="clientsTable">
-      <thead class="table-dark">
-        <tr>
-          <th onclick="sortTable(0)">ID <i class="bi bi-arrow-down-up"></i></th>
-          <th onclick="sortTable(1)">Nom <i class="bi bi-arrow-down-up"></i></th>
-          <th onclick="sortTable(2)">Prénom <i class="bi bi-arrow-down-up"></i></th>
-          <th onclick="sortTable(3)">Description <i class="bi bi-arrow-down-up"></i></th>
-          <th onclick="sortTable(4)">Date début <i class="bi bi-arrow-down-up"></i></th>
-          <th onclick="sortTable(5)">Date fin <i class="bi bi-arrow-down-up"></i></th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="clientsTableBody">
-        <% @clients.each do |client| %>
+  <!-- Clients Table -->
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" id="clientsTable">
+        <thead class="table-light">
           <tr>
-            <td><%= client.id %></td>
-            <td><%= client.nom %></td>
-            <td><%= client.prenom %></td>
-            <td><%= client.description %> (<%= client.user.email %>)</td>
-            <td><%= client.date_debut %></td>
-            <td><%= client.date_fin %></td>
-            <td>
-              <%= link_to client_path(client), class: "btn btn-sm btn-info", title: "Voir" do %>
-                <i class="bi bi-eye"></i>
-              <% end %>
-              <%= link_to edit_client_path(client), class: "btn btn-sm btn-warning", title: "Éditer" do %>
-                <i class="bi bi-pencil"></i>
-              <% end %>
-              <%= button_to client_path(client), method: :delete, class: "btn btn-sm btn-danger", title: "Supprimer", form: { data: { turbo_confirm: "Êtes-vous sûr?" }, style: "display: inline;" } do %>
-                <i class="bi bi-trash"></i>
-              <% end %>
-            </td>
+            <th onclick="sortTable(0)" class="sortable">
+              <i class="bi bi-hash"></i> ID
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(1)" class="sortable">
+              <i class="bi bi-person"></i> Nom
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(2)" class="sortable">
+              <i class="bi bi-person-badge"></i> Prénom
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(3)" class="sortable">
+              <i class="bi bi-card-text"></i> Description
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(4)" class="sortable">
+              <i class="bi bi-calendar-check"></i> Date début
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(5)" class="sortable">
+              <i class="bi bi-calendar-x"></i> Date fin
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th class="text-center">
+              <i class="bi bi-gear"></i> Actions
+            </th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody id="clientsTableBody">
+          <% @clients.each do |client| %>
+            <tr>
+              <td class="fw-bold text-muted">#<%= client.id %></td>
+              <td><%= client.nom %></td>
+              <td><%= client.prenom %></td>
+              <td>
+                <span class="text-truncate d-inline-block" style="max-width: 200px;" title="<%= client.description %>">
+                  <%= client.description %>
+                </span>
+                <br>
+                <small class="text-muted">
+                  <i class="bi bi-person-circle"></i> <%= client.user.email %>
+                </small>
+              </td>
+              <td>
+                <% if client.date_debut %>
+                  <span class="badge bg-success bg-opacity-10 text-success">
+                    <%= client.date_debut.strftime("%d/%m/%Y") %>
+                  </span>
+                <% else %>
+                  <span class="text-muted">-</span>
+                <% end %>
+              </td>
+              <td>
+                <% if client.date_fin %>
+                  <span class="badge bg-danger bg-opacity-10 text-danger">
+                    <%= client.date_fin.strftime("%d/%m/%Y") %>
+                  </span>
+                <% else %>
+                  <span class="text-muted">-</span>
+                <% end %>
+              </td>
+              <td>
+                <div class="d-flex gap-1 justify-content-center">
+                  <%= link_to client_path(client), class: "btn btn-sm btn-outline-primary", title: "Voir" do %>
+                    <i class="bi bi-eye"></i>
+                  <% end %>
+                  <%= link_to edit_client_path(client), class: "btn btn-sm btn-outline-warning", title: "Modifier" do %>
+                    <i class="bi bi-pencil"></i>
+                  <% end %>
+                  <%= button_to client_path(client), method: :delete, class: "btn btn-sm btn-outline-danger", title: "Supprimer", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce client ?" }, style: "display: inline;" } do %>
+                    <i class="bi bi-trash"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if @clients.empty? %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox fs-1 text-muted"></i>
+        <p class="text-muted mt-3">Aucun client trouvé</p>
+        <%= link_to "Créer votre premier client", new_client_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -207,15 +276,13 @@ document.querySelectorAll('#clientsTable thead th[onclick]').forEach(th => {
 </script>
 
 <style>
-  .table thead th {
-    vertical-align: middle;
+  .sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
   }
   
-  .table thead th[onclick]:hover {
-    background-color: #495057 !important;
-  }
-  
-  .btn-group-actions {
-    white-space: nowrap;
+  .sortable:hover {
+    background-color: #e9ecef !important;
   }
 </style>

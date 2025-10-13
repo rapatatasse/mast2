@@ -13,7 +13,7 @@ class ClientsController < ApplicationController
 
   # GET /clients/new
   def new
-    @client = Client.new
+    @client = Client.new(user_id: current_user.id)
     @users = User.all
   end
 
@@ -26,7 +26,6 @@ class ClientsController < ApplicationController
   def create
     @client = Client.new(client_params)
    
-    
     @client.save
     redirect_to clients_path
   end

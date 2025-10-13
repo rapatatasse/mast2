@@ -6,8 +6,21 @@ class User < ApplicationRecord
 
   has_many :clients, dependent: :destroy
 
+  validates :email, presence: true, uniqueness: true
 
   def fullname
-    "#{email} #{id}"
+    if nom.present? && prenom.present?
+      "#{nom} #{prenom}"
+    elsif nom.present?
+      nom
+    elsif prenom.present?
+      prenom
+    else
+      email
+    end
+  end
+
+  def display_name
+    fullname
   end
 end

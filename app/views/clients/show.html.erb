@@ -1,10 +1,164 @@
-<p style="color: green"><%= notice %></p>
+<div class="py-4">
+  <!-- Header with Actions -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">
+        <i class="bi bi-person-badge text-primary"></i> Détails du Client
+      </h1>
+      <p class="text-muted mb-0">Informations complètes du client #<%= @client.id %></p>
+    </div>
+    <div class="d-flex gap-2">
+      <%= link_to clients_path, class: "btn btn-outline-secondary" do %>
+        <i class="bi bi-arrow-left me-1"></i> Retour
+      <% end %>
+      <%= link_to edit_client_path(@client), class: "btn btn-warning" do %>
+        <i class="bi bi-pencil me-1"></i> Modifier
+      <% end %>
+      <%= button_to client_path(@client), method: :delete, class: "btn btn-danger", data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce client ?" } do %>
+        <i class="bi bi-trash me-1"></i> Supprimer
+      <% end %>
+    </div>
+  </div>
 
-<%= render @client %>
+  <!-- Client Information Card -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-primary text-white py-3">
+      <h5 class="mb-0">
+        <i class="bi bi-person-circle me-2"></i>
+        <%= @client.nom %> <%= @client.prenom %>
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-person me-1"></i> Nom
+            </label>
+            <p class="fw-bold fs-5 mb-0"><%= @client.nom || '-' %></p>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-person-badge me-1"></i> Prénom
+            </label>
+            <p class="fw-bold fs-5 mb-0"><%= @client.prenom || '-' %></p>
+          </div>
+        </div>
 
-<div>
-  <%= link_to "Edit this client", edit_client_path(@client) %> |
-  <%= link_to "Back to clients", clients_path %>
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-card-text me-1"></i> Description
+            </label>
+            <p class="mb-0">
+              <%= @client.description.present? ? @client.description : content_tag(:span, 'Aucune description', class: 'text-muted') %>
+            </p>
+          </div>
+        </div>
 
-  <%= button_to "Destroy this client", @client, method: :delete %>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-calendar-check me-1"></i> Date de début
+            </label>
+            <p class="mb-0">
+              <% if @client.date_debut %>
+                <span class="badge bg-success bg-opacity-10 text-success fs-6">
+                  <%= @client.date_debut.strftime("%d/%m/%Y") %>
+                </span>
+              <% else %>
+                <span class="text-muted">Non définie</span>
+              <% end %>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-calendar-x me-1"></i> Date de fin
+            </label>
+            <p class="mb-0">
+              <% if @client.date_fin %>
+                <span class="badge bg-danger bg-opacity-10 text-danger fs-6">
+                  <%= @client.date_fin.strftime("%d/%m/%Y") %>
+                </span>
+              <% else %>
+                <span class="text-muted">Non définie</span>
+              <% end %>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-person-circle me-1"></i> Utilisateur responsable
+            </label>
+            <p class="mb-0">
+              <span class="badge bg-info bg-opacity-10 text-info">
+                <%= @client.user.email %>
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="text-muted small mb-1">
+              <i class="bi bi-clock-history me-1"></i> Créé le
+            </label>
+            <p class="mb-0 text-muted">
+              <%= @client.created_at.strftime("%d/%m/%Y à %H:%M") %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Information -->
+  <% if @client.date_debut && @client.date_fin %>
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h6 class="fw-bold mb-3">
+          <i class="bi bi-calendar-range me-2"></i> Durée du contrat
+        </h6>
+        <% 
+          duree_jours = (@client.date_fin - @client.date_debut).to_i
+          jours_restants = (@client.date_fin - Date.today).to_i if @client.date_fin >= Date.today
+        %>
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-2">
+              <strong>Durée totale:</strong> 
+              <span class="badge bg-primary"><%= duree_jours %> jours</span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <% if jours_restants %>
+              <p class="mb-2">
+                <strong>Jours restants:</strong> 
+                <span class="badge <%= jours_restants < 7 ? 'bg-danger' : 'bg-success' %>">
+                  <%= jours_restants %> jours
+                </span>
+                <% if jours_restants < 7 %>
+                  <small class="text-danger ms-2">
+                    <i class="bi bi-exclamation-triangle"></i> Fin proche !
+                  </small>
+                <% end %>
+              </p>
+            <% else %>
+              <p class="mb-2">
+                <span class="badge bg-secondary">Contrat terminé</span>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

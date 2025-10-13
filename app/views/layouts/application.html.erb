@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mast2</title>
+    <title>MAST2 Demo - <%= content_for?(:title) ? yield(:title) : 'Application Rails' %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,10 +11,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
    </head>
 
-  <body><%= render "shared/navbar" %>
+  <body class="d-flex flex-column min-vh-100">
+    <%= render "shared/navbar" %>
     <%= render "shared/flashes" %>
-    <div class="container">
-      <%= yield %>
-    </div>
+    
+    <main class="flex-grow-1">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </main>
+
+    <%= render "shared/footer" %>
   </body>
 </html>

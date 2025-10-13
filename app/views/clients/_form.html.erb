@@ -1,19 +1,63 @@
-
 <%= simple_form_for(@client) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-  <div class="form-inputs">
-    <%= f.input :nom %>
-    <%= f.input :prenom %>
-    <%= f.input :description %>
-    <div class="d-flex gap-2">
-      <%= f.input :date_debut, as: :date, html5: true, label:"Date début" %>
-      <%= f.input :date_fin, as: :date, html5: true, label:"Date fin" %>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= f.input :nom, 
+                  label: "Nom du client",
+                  input_html: { class: "form-control-lg" },
+                  wrapper_html: { class: "mb-3" } %>
     </div>
-    <%= f.input :user_id, as: :select, label_method: :fullname, value_method: :id, collection: @users %>
+    
+    <div class="col-md-6">
+      <%= f.input :prenom, 
+                  label: "Prénom du client",
+                  input_html: { class: "form-control-lg" },
+                  wrapper_html: { class: "mb-3" } %>
+    </div>
+
+    <div class="col-12">
+      <%= f.input :description, 
+                  as: :text,
+                  label: "Description",
+                  input_html: { rows: 4, class: "form-control" },
+                  wrapper_html: { class: "mb-3" } %>
+    </div>
+
+    <div class="col-md-6">
+      <%= f.input :date_debut, 
+                  as: :date, 
+                  html5: true, 
+                  label: "Date de début",
+                  wrapper_html: { class: "mb-3" } %>
+    </div>
+    
+    <div class="col-md-6">
+      <%= f.input :date_fin, 
+                  as: :date, 
+                  html5: true, 
+                  label: "Date de fin",
+                  wrapper_html: { class: "mb-3" } %>
+    </div>
+
+    <div class="col-12">
+      <%= f.input :user_id, 
+                  as: :select, 
+                  label: "Utilisateur responsable",
+                  label_method: :fullname, 
+                  value_method: :id, 
+                  collection: @users,
+                  selected: @client.user_id,
+                  include_blank: "-- Sélectionner un utilisateur --",
+                  wrapper_html: { class: "mb-3" } %>
+    </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+
+  <div class="d-flex gap-2 justify-content-end mt-4">
+    <%= link_to "Annuler", clients_path, class: "btn btn-outline-secondary" %>
+    <%= f.button :submit, 
+                 @client.new_record? ? "Créer le client" : "Mettre à jour", 
+                 class: "btn btn-primary px-4" %>
   </div>
 <% end %>

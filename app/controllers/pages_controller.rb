@@ -2,7 +2,10 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :home ]
 
   def home
-    @clientsnb = current_user.clients.count
-    @clients = current_user.clients.all
+    if user_signed_in?
+      @clients_count = current_user.clients.count
+      @users_count = User.count
+      @total_clients = Client.count
+    end
   end
 end
