@@ -5,4 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :clients, dependent: :destroy
+
+
+  def fullname
+    "#{email} #{id}"
+  end
 end

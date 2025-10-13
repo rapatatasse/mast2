@@ -10,6 +10,18 @@
   <div data-hello-target="result"></div>
 </div>
 
-<%= @clientsnb %>
 
 <%= link_to "Pages clients", clients_path, class: "btn btn-primary" %>
+<br>
+Mes clients (<%= @clientsnb %>)
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">utilisateur actif</h5>
+    <p class="card-text"><%= current_user.email if user_signed_in? %></p>
+    <% if user_signed_in? %>
+      <%@clients.each do |client| %>
+        <p><%= client.nom %></p>
+      <%end%>
+    <%end%>
+  </div>
+</div>

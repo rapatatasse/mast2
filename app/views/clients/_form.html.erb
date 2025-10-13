@@ -11,6 +11,7 @@
       <%= f.input :date_debut, as: :date, html5: true, label:"Date début" %>
       <%= f.input :date_fin, as: :date, html5: true, label:"Date fin" %>
     </div>
+    <%= f.input :user_id, as: :select, label_method: :fullname, value_method: :id, collection: @users %>
   </div>
   <div class="form-actions">
     <%= f.button :submit, class: "btn btn-primary" %>

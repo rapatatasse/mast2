@@ -3,7 +3,7 @@ class ClientsController < ApplicationController
 
   # GET /clients or /clients.json
   def index
-    @clients = Client.all.order(nom: :asc)
+    @clients = current_user.clients.all.order(nom: :asc)
     
   end
 
@@ -14,19 +14,21 @@ class ClientsController < ApplicationController
   # GET /clients/new
   def new
     @client = Client.new
+    @users = User.all
   end
 
   # GET /clients/1/edit
   def edit
+    @users = User.all
   end
 
   # POST /clients or /clients.json
   def create
     @client = Client.new(client_params)
-
+   
     
     @client.save
-    
+    redirect_to clients_path
   end
 
   # PATCH/PUT /clients/1 or /clients/1.json
