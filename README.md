@@ -31,12 +31,14 @@ pour crer migration et autre action voir
 https://sites.google.com/view/tpass-bibli/g%C3%A9n%C3%A9rateur-de-code-ruby-on-rails
 devant commet mettre :
 ```bash
-docker-compose exec web ...
+docker-compose exec web rails generate migration AddNomToUsers nom:string		
 ```
 exemple :
 ```bash
 docker-compose exec web rails generate model Clients Username:string Lastname:string phone:string mail:string comment:string actif:boolean user:references 
 ```
+docker-compose exec web  rails generate scaffold Clients nom:string prenom:string description:text date_debut:date date_fin:date --no-stylesheets
+
 
 #### Ruby et rails en local: ####
 installer ruby "3.2.2"
