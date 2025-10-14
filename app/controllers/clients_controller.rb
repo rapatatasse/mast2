@@ -3,7 +3,7 @@ class ClientsController < ApplicationController
 
   # GET /clients or /clients.json
   def index
-    @clients = Client.all.order(nom: :asc)
+    @clients = current_user.clients.all.order(nom: :asc)
     @clients = @clients.search(params[:query]) if params[:query].present?
   end
 
@@ -55,10 +55,31 @@ class ClientsController < ApplicationController
     end
   end
 
+  # POST /clients/bulk_update_date
+  def bulk_update_date
+    client_ids = params[:client_ids]
+    
+    if client_ids.blank?
+      redirect_to clients_path, alert: "Aucun client sélectionné"
+      return
+    end
+
+    clients = current_user.clients.where(id: client_ids)
+    updated_count = 0
+
+    clients.each do |client|
+      if client.update(date_fin: Date.today)
+        updated_count += 1
+      end
+    end
+
+    redirect_to clients_path, notice: "#{updated_count} client(s) mis à jour avec succès"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_client
-      @client = Client.find(params[:id])
+      @client = current_user.clients.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

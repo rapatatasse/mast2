@@ -5,7 +5,7 @@ Rails.application.configure do
   config.assets.logger = Logger.new(STDOUT)
   config.assets.raise_runtime_errors = true
   config.assets.debug = true
-  config.assets.digest = true
+  config.assets.digest = false
   config.assets.compile = true
 
   # Log importmap configuration

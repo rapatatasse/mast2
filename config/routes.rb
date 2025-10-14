@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :clients
+  resources :clients do
+    collection do
+      post :bulk_update_date
+    end
+  end
   resources :users, only: [:index, :show, :edit, :update, :destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   
