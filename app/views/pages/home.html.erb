@@ -1,11 +1,173 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="py-5">
+  <!-- Hero Section -->
+  <div class="text-center mb-5">
+    <h1 class="display-3 fw-bold mb-3">
+      <i class="bi bi-code-slash text-primary"></i>
+      MAST2 Demo Project
+    </h1>
+    <p class="lead text-muted">Application de démonstration Ruby on Rails pour étudiants en Master</p>
+  </div>
 
-<code>A faire exo dans le ficheir todo.txt</code>
+  <% if user_signed_in? %>
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3 mb-3">
+              <i class="bi bi-people fs-1 text-primary"></i>
+            </div>
+            <h3 class="fw-bold mb-2"><%= @clients_count %></h3>
+            <p class="text-muted mb-0">Mes Clients</p>
+            <%= link_to "Voir mes clients", clients_path, class: "btn btn-sm btn-outline-primary mt-3" %>
+          </div>
+        </div>
+      </div>
 
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex p-3 mb-3">
+              <i class="bi bi-person-gear fs-1 text-success"></i>
+            </div>
+            <h3 class="fw-bold mb-2"><%= @users_count %></h3>
+            <p class="text-muted mb-0">Utilisateurs</p>
+            <%= link_to "Gérer les utilisateurs", users_path, class: "btn btn-sm btn-outline-success mt-3" %>
+          </div>
+        </div>
+      </div>
 
-<div data-controller="hello">
-  <input data-hello-target="name" type="text">
-  <button data-action="click->hello#greet">greet</button>
-  <div data-hello-target="result"></div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <div class="rounded-circle bg-info bg-opacity-10 d-inline-flex p-3 mb-3">
+              <i class="bi bi-graph-up fs-1 text-info"></i>
+            </div>
+            <h3 class="fw-bold mb-2"><%= @total_clients %></h3>
+            <p class="text-muted mb-0">Total Clients</p>
+            <button class="btn btn-sm btn-outline-info mt-3" disabled>Statistiques</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card border-0 shadow-sm mb-5">
+      <div class="card-header bg-white py-3">
+        <h5 class="mb-0 fw-bold"><i class="bi bi-lightning-charge me-2"></i>Actions Rapides</h5>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <%= link_to new_client_path, class: "btn btn-primary w-100 py-3" do %>
+              <i class="bi bi-plus-circle me-2"></i> Créer un nouveau client
+            <% end %>
+          </div>
+          <div class="col-md-6">
+            <%= link_to clients_path, class: "btn btn-outline-primary w-100 py-3" do %>
+              <i class="bi bi-list-ul me-2"></i> Voir tous les clients
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Project Info Section -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-dark text-white py-3">
+      <h5 class="mb-0 fw-bold"><i class="bi bi-info-circle me-2"></i>Informations du Projet</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h6 class="fw-bold text-primary mb-3">Technologies Utilisées</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="bi bi-gem text-danger me-2"></i>
+              <strong>Ruby:</strong> <%= RUBY_VERSION %>
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-train-front text-danger me-2"></i>
+              <strong>Rails:</strong> <%= Rails.version %>
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-database text-primary me-2"></i>
+              <strong>Base de données:</strong> PostgreSQL
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-bootstrap text-purple me-2"></i>
+              <strong>Framework CSS:</strong> Bootstrap 5
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-lightning-charge text-warning me-2"></i>
+              <strong>JavaScript:</strong> Stimulus + Turbo
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h6 class="fw-bold text-primary mb-3">Fonctionnalités</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Authentification avec Devise
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Gestion CRUD des clients
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Gestion des utilisateurs
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Interface responsive moderne
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              Export CSV/JSON des données
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description Section -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <h5 class="fw-bold mb-3"><i class="bi bi-book me-2"></i>À propos de ce projet</h5>
+      <p class="text-muted mb-3">
+        Cette application est une démonstration pédagogique développée pour les étudiants en Master. 
+        Elle illustre les concepts fondamentaux de Ruby on Rails, notamment :
+      </p>
+      <div class="row">
+        <div class="col-md-6">
+          <ul class="text-muted">
+            <li>Architecture MVC (Model-View-Controller)</li>
+            <li>Relations entre modèles (has_many, belongs_to)</li>
+            <li>Authentification et autorisation</li>
+            <li>Formulaires avec Simple Form</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul class="text-muted">
+            <li>Migrations de base de données</li>
+            <li>Validations et callbacks</li>
+            <li>Routes RESTful</li>
+            <li>Interface utilisateur moderne</li>
+          </ul>
+        </div>
+      </div>
+      
+      <% unless user_signed_in? %>
+        <div class="alert alert-info mt-4" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          <strong>Connectez-vous</strong> pour accéder à toutes les fonctionnalités de l'application.
+        </div>
+        <%= link_to "Se connecter", new_user_session_path, class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
 </div>

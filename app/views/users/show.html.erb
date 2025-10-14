@@ -1,0 +1,189 @@
+<div class="py-4">
+  <!-- Header with Actions -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">
+        <i class="bi bi-person-badge text-success"></i> Profil Utilisateur
+      </h1>
+      <p class="text-muted mb-0">Informations détaillées de l'utilisateur #<%= @user.id %></p>
+    </div>
+    <div class="d-flex gap-2">
+      <%= link_to users_path, class: "btn btn-outline-secondary" do %>
+        <i class="bi bi-arrow-left me-1"></i> Retour
+      <% end %>
+      <%= link_to edit_user_path(@user), class: "btn btn-warning" do %>
+        <i class="bi bi-pencil me-1"></i> Modifier
+      <% end %>
+      <% if @user != current_user %>
+        <%= button_to user_path(@user), 
+                      method: :delete, 
+                      class: "btn btn-danger",
+                      data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet utilisateur ?" } do %>
+          <i class="bi bi-trash me-1"></i> Supprimer
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- User Information Card -->
+    <div class="col-md-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-success text-white py-3">
+          <h5 class="mb-0">
+            <i class="bi bi-person-circle me-2"></i>
+            Informations Personnelles
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-envelope me-1"></i> Email
+              </label>
+              <p class="fw-bold fs-5 mb-0"><%= @user.email %></p>
+            </div>
+
+            <div class="col-md-6">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-hash me-1"></i> ID Utilisateur
+              </label>
+              <p class="fw-bold fs-5 mb-0">#<%= @user.id %></p>
+            </div>
+
+            <div class="col-md-6">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-person me-1"></i> Nom
+              </label>
+              <p class="mb-0">
+                <%= @user.nom.present? ? @user.nom : content_tag(:span, 'Non renseigné', class: 'text-muted') %>
+              </p>
+            </div>
+
+            <div class="col-md-6">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-person-badge me-1"></i> Prénom
+              </label>
+              <p class="mb-0">
+                <%= @user.prenom.present? ? @user.prenom : content_tag(:span, 'Non renseigné', class: 'text-muted') %>
+              </p>
+            </div>
+
+            <div class="col-md-6">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-calendar-plus me-1"></i> Inscrit le
+              </label>
+              <p class="mb-0">
+                <span class="badge bg-info bg-opacity-10 text-info">
+                  <%= @user.created_at.strftime("%d/%m/%Y à %H:%M") %>
+                </span>
+              </p>
+            </div>
+
+            <div class="col-md-6">
+              <label class="text-muted small mb-1">
+                <i class="bi bi-clock-history me-1"></i> Dernière mise à jour
+              </label>
+              <p class="mb-0 text-muted">
+                <%= @user.updated_at.strftime("%d/%m/%Y à %H:%M") %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Card -->
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body text-center">
+          <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3 mb-3">
+            <i class="bi bi-people fs-1 text-primary"></i>
+          </div>
+          <h3 class="fw-bold mb-2"><%= @clients_count %></h3>
+          <p class="text-muted mb-3">Clients gérés</p>
+          <%= link_to "Voir les clients", clients_path, class: "btn btn-sm btn-outline-primary" %>
+        </div>
+      </div>
+
+      <% if @user == current_user %>
+        <div class="alert alert-info" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          <strong>C'est vous !</strong> Vous consultez votre propre profil.
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Clients List -->
+  <% if @user.clients.any? %>
+    <div class="card border-0 shadow-sm mt-4">
+      <div class="card-header bg-white py-3">
+        <h5 class="mb-0 fw-bold">
+          <i class="bi bi-people me-2"></i>
+          Clients de <%= @user.email %>
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th><i class="bi bi-hash"></i> ID</th>
+                <th><i class="bi bi-person"></i> Nom</th>
+                <th><i class="bi bi-person-badge"></i> Prénom</th>
+                <th><i class="bi bi-calendar-check"></i> Date début</th>
+                <th><i class="bi bi-calendar-x"></i> Date fin</th>
+                <th class="text-center"><i class="bi bi-gear"></i> Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @user.clients.each do |client| %>
+                <tr>
+                  <td class="fw-bold text-muted">#<%= client.id %></td>
+                  <td><%= client.nom %></td>
+                  <td><%= client.prenom %></td>
+                  <td>
+                    <% if client.date_debut %>
+                      <span class="badge bg-success bg-opacity-10 text-success">
+                        <%= client.date_debut.strftime("%d/%m/%Y") %>
+                      </span>
+                    <% else %>
+                      <span class="text-muted">-</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if client.date_fin %>
+                      <span class="badge bg-danger bg-opacity-10 text-danger">
+                        <%= client.date_fin.strftime("%d/%m/%Y") %>
+                      </span>
+                    <% else %>
+                      <span class="text-muted">-</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1 justify-content-center">
+                      <%= link_to client_path(client), class: "btn btn-sm btn-outline-primary" do %>
+                        <i class="bi bi-eye"></i>
+                      <% end %>
+                      <%= link_to edit_client_path(client), class: "btn btn-sm btn-outline-warning" do %>
+                        <i class="bi bi-pencil"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="card border-0 shadow-sm mt-4">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-inbox fs-1 text-muted"></i>
+        <p class="text-muted mt-3">Cet utilisateur n'a pas encore de clients</p>
+      </div>
+    </div>
+  <% end %>
+</div>

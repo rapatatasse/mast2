@@ -1,0 +1,83 @@
+<footer class="bg-dark text-white mt-5">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h5 class="fw-bold mb-3">
+          <i class="bi bi-code-square me-2"></i>
+          MAST2 Demo
+        </h5>
+        <p class="text-white-50 small">
+          Application de démonstration Ruby on Rails pour étudiants en Master.
+          Projet pédagogique illustrant les concepts fondamentaux du framework.
+        </p>
+      </div>
+
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h6 class="fw-bold mb-3">Technologies</h6>
+        <ul class="list-unstyled text-white-50 small">
+          <li class="mb-2">
+            <i class="bi bi-gem text-danger me-2"></i>
+            Ruby <%= RUBY_VERSION %>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-train-front text-danger me-2"></i>
+            Rails <%= Rails.version %>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-database text-primary me-2"></i>
+            PostgreSQL
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-bootstrap text-purple me-2"></i>
+            Bootstrap 5
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-4">
+        <h6 class="fw-bold mb-3">Navigation</h6>
+        <ul class="list-unstyled text-white-50 small">
+          <% if user_signed_in? %>
+            <li class="mb-2">
+              <%= link_to root_path, class: "text-white-50 text-decoration-none" do %>
+                <i class="bi bi-house-door me-2"></i>Accueil
+              <% end %>
+            </li>
+            <li class="mb-2">
+              <%= link_to clients_path, class: "text-white-50 text-decoration-none" do %>
+                <i class="bi bi-people me-2"></i>Clients
+              <% end %>
+            </li>
+            <li class="mb-2">
+              <%= link_to users_path, class: "text-white-50 text-decoration-none" do %>
+                <i class="bi bi-person-gear me-2"></i>Utilisateurs
+              <% end %>
+            </li>
+          <% else %>
+            <li class="mb-2">
+              <%= link_to new_user_session_path, class: "text-white-50 text-decoration-none" do %>
+                <i class="bi bi-box-arrow-in-right me-2"></i>Connexion
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-secondary my-4">
+
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center text-md-start">
+        <p class="text-white-50 small mb-0">
+          &copy; <%= Date.today.year %> MAST2 Demo Project - Projet pédagogique
+        </p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <p class="text-white-50 small mb-0">
+          <i class="bi bi-code-slash me-1"></i>
+          Développé avec Ruby on Rails
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

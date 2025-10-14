@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nom: Dupont
+  prenom: Pierre
+  description: Client important pour le projet A
+  date_debut: 2025-01-01
+  date_fin: 2025-12-31
+  user: one
+
+two:
+  nom: Martin
+  prenom: Sophie
+  description: Client pour le projet B
+  date_debut: 2025-03-01
+  date_fin: 2025-09-30
+  user: one
+
+three:
+  nom: Bernard
+  prenom: Luc
+  description: Nouveau client
+  date_debut: 2025-06-01
+  date_fin: 2026-06-01
+  user: two

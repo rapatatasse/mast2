@@ -1,25 +1,51 @@
-<h2>Sign up</h2>
+<div class="py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="text-center mb-4">
+        <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex p-4 mb-3">
+          <i class="bi bi-person-plus fs-1 text-success"></i>
+        </div>
+        <h2 class="fw-bold">Inscription</h2>
+        <p class="text-muted">Créez votre compte MAST2</p>
+      </div>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" }%>
-    <%= f.input :password,
-                required: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
+            <div class="form-inputs">
+              <%= f.input :email,
+                          label: "Email",
+                          required: true,
+                          autofocus: true,
+                          input_html: { autocomplete: "email", class: "form-control-lg" },
+                          wrapper_html: { class: "mb-3" } %>
+              <%= f.input :password,
+                          label: "Mot de passe",
+                          required: true,
+                          hint: ("#{@minimum_password_length} caractères minimum" if @minimum_password_length),
+                          input_html: { autocomplete: "new-password", class: "form-control-lg" },
+                          wrapper_html: { class: "mb-3" } %>
+              <%= f.input :password_confirmation,
+                          label: "Confirmation du mot de passe",
+                          required: true,
+                          input_html: { autocomplete: "new-password", class: "form-control-lg" },
+                          wrapper_html: { class: "mb-3" } %>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= f.button :submit, "S'inscrire", class: "btn btn-success btn-lg" %>
+            </div>
+          <% end %>
+
+          <hr class="my-4">
+
+          <div class="text-center">
+            <%= render "devise/shared/links" %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

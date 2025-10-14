@@ -1,0 +1,288 @@
+<div class="py-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">
+        <i class="bi bi-people text-primary"></i> Gestion des Clients
+      </h1>
+      <p class="text-muted mb-0">Liste complète de vos clients (<%= @clients.count %> clients)</p>
+    </div>
+    <%= link_to new_client_path, class: "btn btn-primary" do %>
+      <i class="bi bi-plus-circle me-2"></i>Nouveau client
+    <% end %>
+  </div>
+
+  <!-- Search and Export Bar -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white">
+              <i class="bi bi-search"></i>
+            </span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom, prénom, description...">
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <button id="exportCSV" class="btn btn-outline-success">
+            <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
+          </button>
+          <button id="exportJSON" class="btn btn-outline-info">
+            <i class="bi bi-filetype-json me-1"></i> JSON
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clients Table -->
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" id="clientsTable">
+        <thead class="table-light">
+          <tr>
+            <th onclick="sortTable(0)" class="sortable">
+              <i class="bi bi-hash"></i> ID
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(1)" class="sortable">
+              <i class="bi bi-person"></i> Nom
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(2)" class="sortable">
+              <i class="bi bi-person-badge"></i> Prénom
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(3)" class="sortable">
+              <i class="bi bi-card-text"></i> Description
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(4)" class="sortable">
+              <i class="bi bi-calendar-check"></i> Date début
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th onclick="sortTable(5)" class="sortable">
+              <i class="bi bi-calendar-x"></i> Date fin
+              <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+            </th>
+            <th class="text-center">
+              <i class="bi bi-gear"></i> Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody id="clientsTableBody">
+          <% @clients.each do |client| %>
+            <tr>
+              <td class="fw-bold text-muted">#<%= client.id %></td>
+              <td><%= client.nom %></td>
+              <td><%= client.prenom %></td>
+              <td>
+                <span class="text-truncate d-inline-block" style="max-width: 200px;" title="<%= client.description %>">
+                  <%= client.description %>
+                </span>
+                <br>
+                <small class="text-muted">
+                  <i class="bi bi-person-circle"></i> <%= client.user.email %>
+                </small>
+              </td>
+              <td>
+                <% if client.date_debut %>
+                  <span class="badge bg-success bg-opacity-10 text-success">
+                    <%= client.date_debut.strftime("%d/%m/%Y") %>
+                  </span>
+                <% else %>
+                  <span class="text-muted">-</span>
+                <% end %>
+              </td>
+              <td>
+                <% if client.date_fin %>
+                  <span class="badge bg-danger bg-opacity-10 text-danger">
+                    <%= client.date_fin.strftime("%d/%m/%Y") %>
+                  </span>
+                <% else %>
+                  <span class="text-muted">-</span>
+                <% end %>
+              </td>
+              <td>
+                <div class="d-flex gap-1 justify-content-center">
+                  <%= link_to client_path(client), class: "btn btn-sm btn-outline-primary", title: "Voir" do %>
+                    <i class="bi bi-eye"></i>
+                  <% end %>
+                  <%= link_to edit_client_path(client), class: "btn btn-sm btn-outline-warning", title: "Modifier" do %>
+                    <i class="bi bi-pencil"></i>
+                  <% end %>
+                  <%= button_to client_path(client), method: :delete, class: "btn btn-sm btn-outline-danger", title: "Supprimer", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce client ?" }, style: "display: inline;" } do %>
+                    <i class="bi bi-trash"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if @clients.empty? %>
+      <div class="text-center py-5">
+        <i class="bi bi-inbox fs-1 text-muted"></i>
+        <p class="text-muted mt-3">Aucun client trouvé</p>
+        <%= link_to "Créer votre premier client", new_client_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+// Fonction de recherche/filtre
+document.getElementById('searchInput').addEventListener('keyup', function() {
+  const searchValue = this.value.toLowerCase();
+  const table = document.getElementById('clientsTableBody');
+  const rows = table.getElementsByTagName('tr');
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const cells = row.getElementsByTagName('td');
+    let found = false;
+
+    for (let j = 0; j < cells.length - 1; j++) { // -1 pour exclure la colonne Actions
+      if (cells[j].textContent.toLowerCase().includes(searchValue)) {
+        found = true;
+        break;
+      }
+    }
+
+    row.style.display = found ? '' : 'none';
+  }
+});
+
+// Fonction de tri
+let sortDirection = {};
+function sortTable(columnIndex) {
+  const table = document.getElementById('clientsTable');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  
+  // Initialiser la direction de tri pour cette colonne
+  if (!sortDirection[columnIndex]) {
+    sortDirection[columnIndex] = 'asc';
+  } else {
+    sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+  }
+  
+  const direction = sortDirection[columnIndex];
+  
+  rows.sort((a, b) => {
+    const aValue = a.cells[columnIndex].textContent.trim();
+    const bValue = b.cells[columnIndex].textContent.trim();
+    
+    // Essayer de comparer comme nombres
+    const aNum = parseFloat(aValue);
+    const bNum = parseFloat(bValue);
+    
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return direction === 'asc' ? aNum - bNum : bNum - aNum;
+    }
+    
+    // Sinon comparer comme texte
+    if (direction === 'asc') {
+      return aValue.localeCompare(bValue);
+    } else {
+      return bValue.localeCompare(aValue);
+    }
+  });
+  
+  // Réinsérer les lignes triées
+  rows.forEach(row => tbody.appendChild(row));
+}
+
+// Export CSV
+document.getElementById('exportCSV').addEventListener('click', function() {
+  const table = document.getElementById('clientsTable');
+  const rows = table.querySelectorAll('tr');
+  let csv = [];
+  
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const cols = row.querySelectorAll('td, th');
+    let csvRow = [];
+    
+    for (let j = 0; j < cols.length - 1; j++) { // -1 pour exclure Actions
+      let data = cols[j].textContent.trim();
+      data = data.replace(/"/g, '""'); // Échapper les guillemets
+      csvRow.push('"' + data + '"');
+    }
+    
+    csv.push(csvRow.join(','));
+  }
+  
+  const csvContent = csv.join('\n');
+  const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'clients_' + new Date().toISOString().split('T')[0] + '.csv');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+// Export JSON
+document.getElementById('exportJSON').addEventListener('click', function() {
+  const table = document.getElementById('clientsTable');
+  const headers = [];
+  const headerCells = table.querySelectorAll('thead th');
+  
+  for (let i = 0; i < headerCells.length - 1; i++) { // -1 pour exclure Actions
+    headers.push(headerCells[i].textContent.trim().split(' ')[0]); // Prendre seulement le texte avant l'icône
+  }
+  
+  const rows = table.querySelectorAll('tbody tr');
+  const data = [];
+  
+  rows.forEach(row => {
+    if (row.style.display !== 'none') { // Seulement les lignes visibles
+      const cells = row.querySelectorAll('td');
+      const rowData = {};
+      
+      for (let i = 0; i < cells.length - 1; i++) { // -1 pour exclure Actions
+        rowData[headers[i]] = cells[i].textContent.trim();
+      }
+      
+      data.push(rowData);
+    }
+  });
+  
+  const jsonContent = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonContent], { type: 'application/json' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'clients_' + new Date().toISOString().split('T')[0] + '.json');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+
+// Ajouter un style pour les en-têtes cliquables
+document.querySelectorAll('#clientsTable thead th[onclick]').forEach(th => {
+  th.style.cursor = 'pointer';
+  th.style.userSelect = 'none';
+});
+</script>
+
+<style>
+  .sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+  }
+  
+  .sortable:hover {
+    background-color: #e9ecef !important;
+  }
+</style>
