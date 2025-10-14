@@ -3,8 +3,8 @@ class ClientsController < ApplicationController
 
   # GET /clients or /clients.json
   def index
-    @clients = current_user.clients.all.order(nom: :asc)
-    
+    @clients = Client.all.order(nom: :asc)
+    @clients = @clients.search(params[:query]) if params[:query].present?
   end
 
   # GET /clients/1 or /clients/1.json
@@ -25,21 +25,23 @@ class ClientsController < ApplicationController
   # POST /clients or /clients.json
   def create
     @client = Client.new(client_params)
-   
-    @client.save
-    redirect_to clients_path
+    
+    if @client.save
+      redirect_to clients_path
+    else
+      render :new
+    end
   end
 
   # PATCH/PUT /clients/1 or /clients/1.json
   def update
     
-    @client.update(client_params)
-    @client.nom = @client.nom.upcase
-    @client.save!
-
-    redirect_to clients_path
+    if @client.update(client_params)
+      redirect_to clients_path
+    else
+      render :edit
+    end
     
-     
     
   end
 
@@ -61,6 +63,6 @@ class ClientsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def client_params
-      params.require(:client).permit(:nom, :prenom, :description, :date_debut, :date_fin)
+      params.require(:client).permit(:nom, :prenom, :description, :date_debut, :date_fin, :user_id)
     end
 end

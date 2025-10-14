@@ -115,6 +115,8 @@ GEM
       railties (>= 6.1)
     erubi (1.13.1)
     execjs (2.10.0)
+    faker (3.5.2)
+      i18n (>= 1.8.11, < 2)
     ffi (1.17.0-x86_64-linux-gnu)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
@@ -168,7 +170,11 @@ GEM
     nokogiri (1.17.2-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    ostruct (0.6.3)
     pg (1.5.9)
+    pg_search (2.3.7)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     popper_js (2.11.8)
     psych (5.2.2)
       date
@@ -271,6 +277,10 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    wicked_pdf (2.8.2)
+      activesupport
+      ostruct
+    wkhtmltopdf-binary (0.12.6.10)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.1)
@@ -286,12 +296,14 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
+  faker
   font-awesome-sass (~> 6.1)
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
   mini_racer
   pg (~> 1.1)
+  pg_search
   puma (~> 5.0)
   rack-mini-profiler
   rails (~> 7.0.8)
@@ -304,6 +316,8 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  wicked_pdf
+  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 3.2.2p53

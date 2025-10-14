@@ -1,0 +1,5 @@
+<!-- search bar with simple form-->
+<%= form_with url: clients_path, method: :get, class: "d-flex gap-2" do |f| %>
+  <%= f.text_field :query, value: params[:query], placeholder: "Rechercher par nom, prénom, email...", class: "form-control" %>
+  <%= f.submit "Rechercher", class: "btn btn-success" %>
+<% end %>
