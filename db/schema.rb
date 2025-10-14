@@ -22,19 +22,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_13_124059) do
     t.date "date_fin"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", default: 1, null: false
-    t.index ["user_id"], name: "index_clients_on_user_id"
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.float "price", default: 0.0
-    t.integer "quantity", default: 0
     t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_products_on_user_id"
+    t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -52,5 +41,4 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_13_124059) do
   end
 
   add_foreign_key "clients", "users"
-  add_foreign_key "products", "users"
 end

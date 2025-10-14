@@ -12,29 +12,7 @@
     <% end %>
   </div>
 
-  <!-- Search and Export Bar -->
-  <div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
-      <div class="row g-3">
-        <div class="col-md-6">
-          <div class="input-group">
-            <span class="input-group-text bg-white">
-              <i class="bi bi-search"></i>
-            </span>
-            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom, prénom, description...">
-          </div>
-        </div>
-        <div class="col-md-6 text-end">
-          <button id="exportCSV" class="btn btn-outline-success">
-            <i class="bi bi-file-earmark-spreadsheet me-1"></i> CSV
-          </button>
-          <button id="exportJSON" class="btn btn-outline-info">
-            <i class="bi bi-filetype-json me-1"></i> JSON
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'clients/searchbar' %>
 
   <!-- Clients Table -->
   <div class="card border-0 shadow-sm">
@@ -101,7 +79,16 @@
                     <%= client.date_fin.strftime("%d/%m/%Y") %>
                   </span>
                 <% else %>
-                  <span class="text-muted">-</span>
+                  <%= simple_form_for(client) do |f| %>
+                    <%= f.error_notification %>
+                    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+                      <%= f.input :date_fin, as: :hidden, input_html: { value: Date.today } %>
+                      <button type="submit" class="btn btn-primary" onclick="return confirm('Valider l\'ajout de date?')">
+                        <i class="bi bi-clock-fill text-white"></i>
+                      </button>
+                  <% end %>
+
                 <% end %>
               </td>
               <td>
@@ -134,27 +121,7 @@
 </div>
 
 <script>
-// Fonction de recherche/filtre
-document.getElementById('searchInput').addEventListener('keyup', function() {
-  const searchValue = this.value.toLowerCase();
-  const table = document.getElementById('clientsTableBody');
-  const rows = table.getElementsByTagName('tr');
 
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    const cells = row.getElementsByTagName('td');
-    let found = false;
-
-    for (let j = 0; j < cells.length - 1; j++) { // -1 pour exclure la colonne Actions
-      if (cells[j].textContent.toLowerCase().includes(searchValue)) {
-        found = true;
-        break;
-      }
-    }
-
-    row.style.display = found ? '' : 'none';
-  }
-});
 
 // Fonction de tri
 let sortDirection = {};
