@@ -1,4 +1,4 @@
-<div class="py-4">
+<div class="py-4" data-controller="updatedate">
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -11,8 +11,32 @@
       <i class="bi bi-plus-circle me-2"></i>Nouveau client
     <% end %>
   </div>
-
+  
   <%= render 'clients/searchbar' %>
+
+  <!-- Bulk Update Section -->
+  <div class="card border-0 shadow-sm mb-3">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h6 class="mb-0">
+            <i class="bi bi-calendar-check text-success"></i>
+            Mise à jour en masse - 
+            <span data-updatedate-target="counter" class="badge bg-primary">0</span> 
+            client(s) sélectionné(s)
+          </h6>
+        </div>
+        <button 
+          data-updatedate-target="submitButton"
+          data-action="click->updatedate#submitUpdate"
+          class="btn btn-secondary" 
+          disabled>
+          <i class="bi bi-calendar-plus me-1"></i>
+          Mettre date fin à aujourd'hui
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Clients Table -->
   <div class="card border-0 shadow-sm">
@@ -20,27 +44,34 @@
       <table class="table table-hover align-middle mb-0" id="clientsTable">
         <thead class="table-light">
           <tr>
-            <th onclick="sortTable(0)" class="sortable">
+            <th class="text-center" style="width: 50px;">
+              <input 
+                type="checkbox" 
+                class="form-check-input" 
+                data-action="change->updatedate#toggleAll"
+                title="Tout sélectionner">
+            </th>
+            <th onclick="sortTable(1)" class="sortable">
               <i class="bi bi-hash"></i> ID
               <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
             </th>
-            <th onclick="sortTable(1)" class="sortable">
+            <th onclick="sortTable(2)" class="sortable">
               <i class="bi bi-person"></i> Nom
               <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
             </th>
-            <th onclick="sortTable(2)" class="sortable">
+            <th onclick="sortTable(3)" class="sortable">
               <i class="bi bi-person-badge"></i> Prénom
               <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
             </th>
-            <th onclick="sortTable(3)" class="sortable">
+            <th onclick="sortTable(4)" class="sortable">
               <i class="bi bi-card-text"></i> Description
               <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
             </th>
-            <th onclick="sortTable(4)" class="sortable">
+            <th onclick="sortTable(5)" class="sortable">
               <i class="bi bi-calendar-check"></i> Date début
               <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
             </th>
-            <th onclick="sortTable(5)" class="sortable">
+            <th onclick="sortTable(6)" class="sortable">
               <i class="bi bi-calendar-x"></i> Date fin
               <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
             </th>
@@ -52,6 +83,14 @@
         <tbody id="clientsTableBody">
           <% @clients.each do |client| %>
             <tr>
+              <td class="text-center">
+                <input 
+                  type="checkbox" 
+                  class="form-check-input" 
+                  value="<%= client.id %>"
+                  data-updatedate-target="checkbox"
+                  data-action="change->updatedate#toggleCheckbox">
+              </td>
               <td class="fw-bold text-muted">#<%= client.id %></td>
               <td><%= client.nom %></td>
               <td><%= client.prenom %></td>
@@ -162,78 +201,6 @@ function sortTable(columnIndex) {
   // Réinsérer les lignes triées
   rows.forEach(row => tbody.appendChild(row));
 }
-
-// Export CSV
-document.getElementById('exportCSV').addEventListener('click', function() {
-  const table = document.getElementById('clientsTable');
-  const rows = table.querySelectorAll('tr');
-  let csv = [];
-  
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    const cols = row.querySelectorAll('td, th');
-    let csvRow = [];
-    
-    for (let j = 0; j < cols.length - 1; j++) { // -1 pour exclure Actions
-      let data = cols[j].textContent.trim();
-      data = data.replace(/"/g, '""'); // Échapper les guillemets
-      csvRow.push('"' + data + '"');
-    }
-    
-    csv.push(csvRow.join(','));
-  }
-  
-  const csvContent = csv.join('\n');
-  const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  
-  link.setAttribute('href', url);
-  link.setAttribute('download', 'clients_' + new Date().toISOString().split('T')[0] + '.csv');
-  link.style.visibility = 'hidden';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-});
-
-// Export JSON
-document.getElementById('exportJSON').addEventListener('click', function() {
-  const table = document.getElementById('clientsTable');
-  const headers = [];
-  const headerCells = table.querySelectorAll('thead th');
-  
-  for (let i = 0; i < headerCells.length - 1; i++) { // -1 pour exclure Actions
-    headers.push(headerCells[i].textContent.trim().split(' ')[0]); // Prendre seulement le texte avant l'icône
-  }
-  
-  const rows = table.querySelectorAll('tbody tr');
-  const data = [];
-  
-  rows.forEach(row => {
-    if (row.style.display !== 'none') { // Seulement les lignes visibles
-      const cells = row.querySelectorAll('td');
-      const rowData = {};
-      
-      for (let i = 0; i < cells.length - 1; i++) { // -1 pour exclure Actions
-        rowData[headers[i]] = cells[i].textContent.trim();
-      }
-      
-      data.push(rowData);
-    }
-  });
-  
-  const jsonContent = JSON.stringify(data, null, 2);
-  const blob = new Blob([jsonContent], { type: 'application/json' });
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  
-  link.setAttribute('href', url);
-  link.setAttribute('download', 'clients_' + new Date().toISOString().split('T')[0] + '.json');
-  link.style.visibility = 'hidden';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-});
 
 // Ajouter un style pour les en-têtes cliquables
 document.querySelectorAll('#clientsTable thead th[onclick]').forEach(th => {

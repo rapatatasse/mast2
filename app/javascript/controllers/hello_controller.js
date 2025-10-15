@@ -9,7 +9,7 @@ export default class extends Controller {
     console.log(`Hello, ${name}!`)
     this.resultTarget.innerHTML = `
     <p>Vous utilisez  pour marquer : ${name}!</p>
-    <p>ça sert a rien mais c'est une bonne base :)</p>
+    <p>xxxxx :)</p>
     <p>Retrouvez moi dans hello_controlleur</p>
 `
   }
